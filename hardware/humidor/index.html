@@ -3,51 +3,36 @@
 
 <title>Humidor</title>
 
-<style type="text/css">
-body {
-	background-image: url( cigars.jpg );
-	background-size: 100% 100%;
-	background-repeat: no-repeat;
-	color: #FFF;
-	font-family: "facitweb-1", "facitweb-2";
-}
+<!-- Styles -->
+<link rel="stylesheet" type="text/css" href="humidor.css">
 
-.field {
-	background-color: rgba( 0, 0, 0, 0.40 );
-	border-radius: 10 10 10 10;
-	width: 200px;
-}
-
-.rule {
-	border-bottom-color: #FFF;
-	border-bottom-style: solid;			
-	border-bottom-width: 1px;
-	margin-left: 20px;
-	margin-right: 20px;
-}
-
-.title {
-	text-align: center;	
-}
-
-.value {
-	font-size: 112px;
-	text-align: center;	
-}
-</style>
-
+<!-- TypeKit for nice looking fonts -->
 <script type="text/javascript" src="http://use.typekit.com/evr0ipd.js"></script>
 <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
 
-</head>
-<body>
+<!-- Humidor code -->
+<script type="text/javascript" src="humidor.js"></script>
 
+</head>
+<body onLoad="doLoad();">
+
+<!-- Main display -->
 <div id="display">
-	<div class="field">
+
+	<!-- Temperature -->
+	<div id="temperature" class="field">
     	<div class="title">Temperature</div>
         <div class="rule"></div>
-        <div class="value">72&deg;</div>
+        <div class="value">&nbsp;</div>
     </div>
+	
+    <!-- Humidity -->
+    <div id="humidity" class="field">
+    	<div class="title">Humidity</div>
+        <div class="rule"></div>
+        <div class="value">&nbsp;</div>
+    </div>  
+      
 </div>
 
 </body>

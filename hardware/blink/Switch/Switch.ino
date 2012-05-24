@@ -7,7 +7,8 @@ int ledPin =  13;
 void setup()   
 {                
   Serial.begin( 9600 );
-  pinMode( ledPin, OUTPUT );     
+  pinMode( ledPin, OUTPUT );
+  digitalWrite( ledPin, LOW );  
 }
 
 // Called repeatedly while running

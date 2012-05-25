@@ -1,5 +1,5 @@
 // Externalize LED pin
-int ledPin =  13;
+int ledPin =  11;
 
 // Called to configure the system
 // Opens serial communication

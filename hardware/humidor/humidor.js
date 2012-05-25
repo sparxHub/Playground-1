@@ -1,6 +1,7 @@
 // Constants
 var JSONP_CALLBACK = 'doData';
 var THING_SPEAK = 'http://api.thingspeak.com/channels/2217/feed/last.json';
+var VARIATION = 0;
 
 // Global tracks interval ID
 var update = null;
@@ -44,7 +45,7 @@ function doData( json )
 	
 	// Populate the temperature field
 	field = document.querySelector( '#temperature > .value' );
-	field.innerHTML = Math.round( json.field1 - 10 ) + '&deg;';
+	field.innerHTML = Math.round( json.field1 + VARIATION ) + '&deg;';
 	
 	// Populate the humidity field
 	field = document.querySelector( '#humidity > .value' );

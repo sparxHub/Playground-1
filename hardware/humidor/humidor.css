@@ -1,9 +1,19 @@
 body {
 	background-image: url( cigars.jpg );
-	background-size: 100% 100%;
+	background-size: 100%, 100%;
 	background-repeat: no-repeat;
 	color: #FFF;
 	font-family: "facitweb-1", "facitweb-2";
+	overflow: hidden;
+}
+
+#created {
+	bottom: 5px;
+	font-size: 12px;
+	position: absolute;
+	text-align: center;
+	text-shadow: 1px 1px rgba( 0, 0, 0, 0.60 );	
+	width: 100%;	
 }
 
 #display {

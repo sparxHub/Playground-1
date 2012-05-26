@@ -41,7 +41,9 @@ function loadData()
 // Leverages parsed JSON data to populate fields
 function doData( json )
 {
+	var date = null;
 	var field = null
+	var time = null;
 	
 	// Populate the temperature field
 	field = document.querySelector( '#temperature > .value' );
@@ -49,7 +51,15 @@ function doData( json )
 	
 	// Populate the humidity field
 	field = document.querySelector( '#humidity > .value' );
-	field.innerHTML = Math.round( json.field2 ) + '%';	
+	field.innerHTML = Math.round( json.field2 ) + '%';
+	
+	// Parse and formate date and time values
+	date = moment( json.created_at ).format( 'MMMM DD, YYYY' );
+	time = moment( json.created_at ).format( 'h:mm A' );
+
+	// Populate the date the data was created
+	field = document.querySelector( '#created' );
+	field.innerHTML = 'Last updated on ' + date + ' at ' + time;	
 }
 
 // Called when the document has finished loading

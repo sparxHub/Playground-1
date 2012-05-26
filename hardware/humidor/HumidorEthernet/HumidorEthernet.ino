@@ -10,7 +10,7 @@
 byte   mac[] = {0x90, 0xA2, 0xDA, 0x0D, 0x24, 0x28};
 char   domain[] = "api.thingspeak.com";
 String key = "3O1D1RNNBD2TFQSQ";
-int    interval = 10 * 1000;
+long   interval = 30 * 1000;
 
 // Tracking connections
 long    lastTime = 0; 

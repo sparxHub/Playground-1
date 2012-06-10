@@ -14,7 +14,7 @@
 // Default is 256
 #define MAX_FRAME_LENGTH 64
 
-#define PHOTOCELL_PIN 0
+#define PHOTOCELL_PIN 1
 
 #define LED_PIN 8
 
@@ -89,8 +89,8 @@ void setup()
   
   // WPA1/2 use auth 3 and also send 'set wlan phrase PASSWORD'
   // WEP use auth 2 and also send 'set wlan key KEY'
-  WiFly.sendCommand( F( "set wlan auth 3" ) );
-  WiFly.sendCommand( F( "set wlan phrase Paige123" ) );
+  WiFly.sendCommand( F( "set wlan auth 0" ) );
+  // WiFly.sendCommand( F( "set wlan phrase Welcome to KaazingWifi" ) );
   WiFly.sendCommand( F( "set wlan channel 0" ) );
   WiFly.sendCommand( F( "set ip dhcp 1" ) );
   WiFly.sendCommand( F( "set comm remote 0" ) ); 

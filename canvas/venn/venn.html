@@ -5,70 +5,30 @@
 
 <script type="text/javascript">
 var INTERSECTION_FILL = '#A0A8F9';
+var LABEL_COLOR = '#000000';
+var LABEL_FONT = '11px Arial';
+var LINE_BREAK = '\n';
+var LINE_HEIGHT = 14;
 
 // Venn diagram circles
 var circles = [
-	{cx: 145, cy: 200, r: 115, fill: '#A0A8F9', stroke: '#000000', line: 2},
-	{cx: 370, cy: 185, r: 170, fill: '#A0A8F9', stroke: '#000000', line: 2},
-	{cx: 300, cy: 330, r: 140, fill: '#A0A8F9', stroke: '#000000', line: 2}
+	{cx: 145, cy: 200, r: 115, fill: '#A0A8F9', stroke: '#000000', line: 2, label: '@gregsramblings\nfollowers', placement: 'top'},
+	{cx: 370, cy: 185, r: 170, fill: '#A0A8F9', stroke: '#000000', line: 2, label: '@mchaize\nfollowers', placement: 'top'},
+	{cx: 300, cy: 330, r: 140, fill: '#A0A8F9', stroke: '#000000', line: 2, label: '@devgirlfl\nfollowers', placement: 'bottom'}
 ];
 
 // Global variables
 var canvas = null;
 var context = null;
 
-// Called to determine scan area
-// Looks at all circles and determines maximum area
-// Returns a rectangle with that area
-// Limits color scanning to finite area for performance
-// NOTE: Not used in this implementation
-function area()
-{
-	var maxx = 0;
-	var maxy = 0;
-	var minx = 0;
-	var miny = 0;
-	
-	minx = canvas.width;
-	miny = canvas.height;
-	
-	for( var c = 0; c < circles.length; c++ )
-	{
-		if( ( circles[c].cx - circles[c].r ) < minx )
-		{
-			minx = circles[c].cx - circles[c].r;	
-		}
-		
-		if( ( circles[c].cy - circles[c].r ) < miny )
-		{
-			miny = circles[c].cy - circles[c].r;	
-		}		
-		
-		if( ( circles[c].cx + circles[c].r ) > maxx )
-		{
-			maxx = circles[c].cx + circles[c].r;	
-		}
-		
-		if( ( circles[c].cy + circles[c].r ) > maxy )
-		{
-			maxy = circles[c].cy + circles[c].r;				
-		}
-	}
-	
-	return {
-		x: minx,
-		y: miny,
-		width: maxx - minx,
-		height: maxy - miny	
-	}
-}
-
-
 // Called to draw the diagram
 // No arguments draws no fill
 // Arguments indicate desired intersection
 function redraw()
 {	
+	var lines = null;
+	var placement = null;
+
 	// Clear before we draw
 	context.clearRect( 0, 0, canvas.width, canvas.height );
 	
@@ -90,13 +50,42 @@ function redraw()
 		context.globalCompositeOperation = 'source-over';		
 	}
 
+	// Draw the circle outlines on top of fill
+	// Also handles drawing labels for circles
 	for( var c = 0; c < circles.length; c++ )
 	{
+		// Outlines
 		context.beginPath();
 		context.strokeStyle = circles[c].stroke;	
 		context.lineWidth = circles[c].line;
 		context.arc( circles[c].cx, circles[c].cy, circles[c].r, 0, Math.PI * 2, true );
-		context.stroke();				
+		context.stroke();
+		
+		// Split label lines
+		// No multiline text in canvas
+		lines = circles[c].label.split( LINE_BREAK );
+
+		// Set styling
+		context.font = LABEL_FONT;
+		context.fillStyle = LABEL_COLOR;
+		context.textAlign = 'center';
+		
+		// Draw labels
+		for( var t = 0; t < lines.length; t++ )
+		{
+			// Allow user-specified label placement of top or bottom
+			// Calculate roughly from specified arbitrary line height
+			if( circles[c].placement == 'top' )
+			{
+				placement = circles[c].cy - circles[c].r + ( lines.length * LINE_HEIGHT );			
+			} else {
+				placement = circles[c].cy + circles[c].r - ( lines.length * LINE_HEIGHT );				
+			}
+			
+			// Canvas text metrics do not give line height
+			// Arbitrary number based off font setting
+			context.fillText( lines[t], circles[c].cx, placement + ( t * LINE_HEIGHT ) );				
+		}	
 	}	
 }
 
@@ -130,11 +119,11 @@ function doLoad()
 	selection = document.querySelector( '#intersect' );
 	selection.onchange = doChange;
 
-	// Drawing
+	// Initial drawing
 	redraw();
 }
 
-// Load and resize event handlers
+// Load event handler
 window.onload = doLoad;
 </script>
 

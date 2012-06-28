@@ -573,7 +573,9 @@ function doNoteAdd()
 	
 	list = document.querySelector( '#list' );
 	list.style.webkitTransition = 'padding-top 0.5s linear';
+	list.style.MozTransition = 'padding-top 0.5s linear';	
 	list.addEventListener( 'webkitTransitionEnd', doNoteEnd );
+	list.addEventListener( 'transitionend', doNoteEnd );
 	list.style.paddingTop = '42px';
 }
 
@@ -608,7 +610,9 @@ function doNoteEnd()
 	
 	list = document.querySelector( '#list' );
 	list.style.webkitTransition = '';
+	list.style.MozTransition = '';	
 	list.removeEventListener( 'webkitTransitionEnd', doNoteEnd );
+	list.removeEventListener( 'transitionend', doNoteEnd );	
 	
 	selected = document.querySelector( '#list > .selected' );
 	selected.className = 'note';	

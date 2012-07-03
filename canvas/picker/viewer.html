@@ -3,6 +3,8 @@
 
 <title>Color Viewer</title>
 
+<script src="kaazing/WebSocket.js" type="text/javascript"></script>
+
 <script type="text/javascript">
 var socket = null;
 var xhr = null;
@@ -43,7 +45,7 @@ function doWindowLoad()
 	xhr.open( 'GET', 'color.php', true );
 	xhr.send( null );	
 	
-	socket = new MozWebSocket( 'ws://localhost:8001/echo' );
+	socket = new WebSocket( 'ws://localhost:8001/listener' );
 	socket.onmessage = doSocketMessage;
 	socket.onopen = doSocketOpen;
 	socket.onerror = doSocketError;

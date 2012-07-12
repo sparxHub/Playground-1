@@ -2,7 +2,7 @@
 // Web Socket server is publicly available
 var DISTANCE_CLOSE = '0px';
 var DISTANCE_OPEN = '94px';
-var ECHO_SERVER = 'ws://echo.websocket.org?encoding=text';
+var ECHO_SERVER = 'ws://localhost:8080';
 
 // Web Socket itself
 var socket = null;
@@ -21,6 +21,9 @@ function doClose()
 // Configures Web Socket
 function doLoad()
 {
+	// Account for different naming conventions
+	window.WebSocket = window.WebSocket || window.MozWebSocket;	
+	
 	// Configure the Web Socket
 	socket = new WebSocket( ECHO_SERVER );
 	socket.onopen = doOpen;

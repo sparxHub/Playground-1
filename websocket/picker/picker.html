@@ -5,8 +5,6 @@
 
 <link href="picker.css" rel="stylesheet" type="text/css">
 
-<script src="kaazing/WebSocket.js" type="text/javascript"></script>
-
 <script type="text/javascript">
 var canvas = null;
 var context = null;
@@ -147,13 +145,14 @@ function doSocketOpen( evt )
 
 function doWindowLoad()
 {
+	window.WebSocket = window.WebSocket || window.MozWebSocket;	
 	touch = ( 'ontouchstart' in document.documentElement ) ? true : false;	
 	
 	canvas = document.querySelector( '#picker' );
 	context = canvas.getContext( '2d' );
 	canvas.addEventListener( touch ? 'touchstart' : 'mousedown', doCanvasDown );
 
-	socket = new WebSocket( 'ws://localhost:8001/sender' );
+	socket = new WebSocket( 'ws://localhost:8090' );
 	socket.onopen = doSocketOpen;
 	socket.onmessage = doSocketMessage;
 	socket.onerror = doSocketError;

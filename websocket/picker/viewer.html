@@ -3,8 +3,6 @@
 
 <title>Color Viewer</title>
 
-<script src="kaazing/WebSocket.js" type="text/javascript"></script>
-
 <script type="text/javascript">
 var socket = null;
 var xhr = null;
@@ -30,7 +28,7 @@ function doSocketError( evt )
 function doSocketMessage( mess )
 {
 	console.log( mess );
-	document.body.style.backgroundColor = color;	
+	document.body.style.backgroundColor = mess.data;	
 }
 
 function doSocketOpen( evt )
@@ -44,8 +42,10 @@ function doWindowLoad()
 	xhr.onload = doRequestLoad;
 	xhr.open( 'GET', 'color.php', true );
 	xhr.send( null );	
+
+	window.WebSocket = window.WebSocket || window.MozWebSocket;
 	
-	socket = new WebSocket( 'ws://localhost:8001/listener' );
+	socket = new WebSocket( 'ws://localhost:8090' );
 	socket.onmessage = doSocketMessage;
 	socket.onopen = doSocketOpen;
 	socket.onerror = doSocketError;

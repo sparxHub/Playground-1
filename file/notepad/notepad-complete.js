@@ -22,7 +22,7 @@ function read( file )
 	
 	// Display the name of the file
 	named = document.querySelector( '#reference' );
-	named.innerHTML = file.fileName;	
+	named.innerHTML = file.name;	
 }
 
 // Called when a file is dropped on the document

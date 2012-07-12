@@ -2,13 +2,16 @@
 <html>
 <head>
 
+<meta name="viewport" content="width=device-width, maximum-scale=1.0">
+
 <title>Virus</title>
 
 <style type="text/css">
 body {
-	background-image: url( background.png );
+	background-image: url( background.jpg );
 	background-repeat: no-repeat;		
 	background-size: 100%, 100%;
+	overflow: hidden;
 	-moz-user-select: none;
 	-webkit-user-select: none;
 	user-select: none;
@@ -26,14 +29,30 @@ body {
 <script type="text/javascript">
 var assets = null;
 var game = null;
-var germs = null;
 var loading = null;
-var mine = null;
+var sheets = null;
 var stage = null;
 var touch = null;
 
+function addGerm( id, x, y )
+{
+	var animation = null;
+	var index = null;
+	
+	index = Math.floor( Math.random() * sheets.length );
+	
+	animation = new BitmapAnimation( sheets[index] );
+	animation.id = id;
+	animation.x = x;
+	animation.y = y;
+	animation.gotoAndPlay( 'infect' );	
+	
+	stage.addChild( animation );
+}
+
 function preload()
 {
+	var connect = null;
 	var sprites = null;
 	
 	if( loading == null )
@@ -49,11 +68,13 @@ function preload()
 		sprites.addEventListener( 'load', doSpritesLoad );
 		sprites.src = assets[loading].source;
 	} else {
-		loading = null;	
-		
-		Ticker.addListener( window );		
+		loading = null;			
 		
 		alert( 'Sprites loaded.' );
+		
+		stage.removeAllChildren();				
+		game.addEventListener( touch ? 'touchstart' : 'mousedown', doGameDown );
+		Ticker.addListener( window );	
 	}
 }
 
@@ -62,9 +83,98 @@ function tick()
 	stage.update();	
 }
 
+function doGameDown( evt )
+{
+	evt.preventDefault();
+	evt.stopPropagation();
+	
+	if( stage.getNumChildren() == 0 )
+	{
+		game.addEventListener( touch ? 'touchmove' : 'mousemove', doGameMove );
+		game.addEventListener( touch ? 'touchend' : 'mouseup', doGameUp );		
+	}	
+	
+	if( touch )
+	{
+		for( var t = 0; t < evt.changedTouches.length; t++ )
+		{
+			addGerm( 
+				evt.changedTouches[t].identifier,
+				evt.changedTouches[t].clientX,
+				evt.changedTouches[t].clientY			
+			);
+		}
+	} else {
+		addGerm(
+			0,
+			evt.clientX,
+			evt.clientY	
+		);		
+	}
+}
+
+function doGameMove( evt )
+{	
+	var child = null;
+
+	evt.preventDefault();
+	evt.stopPropagation();	
+	
+	if( touch )
+	{
+		for( var t = 0; t < evt.changedTouches.length; t++ )
+		{
+			for( var c = 0; c < stage.getNumChildren(); c++ )
+			{
+				child = stage.getChildAt( c );
+				
+				if( child.id == evt.changedTouches[t].identifier )
+				{
+					child.x = evt.changedTouches[t].clientX;
+					child.y = evt.changedTouches[t].clientY;						
+				
+					break;
+				}
+			}
+		}
+	} else {
+		stage.getChildAt( 0 ).x = evt.clientX;
+		stage.getChildAt( 0 ).y = evt.clientY;
+	}	
+}
+
+function doGameUp( evt )
+{
+	var child = null;
+	
+	if( touch )
+	{
+		for( var t = 0; t < evt.changedTouches.length; t++ )
+		{
+			for( var c = 0; c < stage.getNumChildren(); c++ )
+			{
+				child = stage.getChildAt( c );
+				
+				if( child.id == evt.changedTouches[t].identifier )
+				{
+					stage.removeChild( child );				
+					break;
+				}
+			}
+		}		
+	} else {
+		stage.removeChildAt( 0 );
+	}
+	
+	if( stage.getNumChildren() == 0 )
+	{
+		game.removeEventListener( touch ? 'touchmove' : 'mousemove', doGameMove );
+		game.removeEventListener( touch ? 'touchend' : 'mouseup', doGameUp );		
+	}
+}
+
 function doSpritesLoad()
 {
-	var animation = null;
 	var sheet = null;
 	
 	sheet = new SpriteSheet( {
@@ -75,81 +185,16 @@ function doSpritesLoad()
 			regX: assets[loading].registrationX, 
 			regY: assets[loading].registrationY
 		}, animations: {
-			scare: [0, assets[loading].frames, 'scare']
+			infect: [0, assets[loading].frames, 'infect']
 		}
 	} );	
 	
-	animation = new BitmapAnimation( sheet );
-	animation.visible = false;
-	// animation.shadow = new Shadow( 'rgba( 45, 17, 17, 0.70 )', 2, 2, 10 );
-	animation.gotoAndPlay( 'scare' );
-
-	germs.push( animation );
-	
+	sheets.push( sheet );
 	preload();
 }
 
-function doGameDown( evt )
-{
-	var germx = null;
-	var germy = null;
-	
-	evt.preventDefault();
-	evt.stopPropagation();
-	
-	if( touch )
-	{
-		germx = evt.touches[0].clientX;
-		germy = evt.touches[0].clientY;		
-	} else {
-		germx = evt.clientX;	
-		germy = evt.clientY;
-	}
-	
-	mine = Math.floor( Math.random() * germs.length );
-	
-	stage.addChild( germs[mine] );
-	germs[mine].x = germx;
-	germs[mine].y = germy;
-	germs[mine].visible = true;
-	
-	game.addEventListener( touch ? 'touchmove' : 'mousemove', doGameMove );
-	game.addEventListener( touch ? 'touchend' : 'mouseup', doGameUp );
-}
-
-function doGameMove( evt )
-{
-	var germx = null;
-	var germy = null;
-	
-	evt.preventDefault();
-	evt.stopPropagation();	
-	
-	if( touch )
-	{
-		germx = evt.touches[0].clientX;
-		germy = evt.touches[0].clientY;		
-	} else {
-		germx = evt.clientX;	
-		germy = evt.clientY;
-	}	
-	
-	germs[mine].x = germx;
-	germs[mine].y = germy;
-}
-
-function doGameUp( evt )
-{
-	germs[mine].visible = false;
-	stage.removeChild( germs[mine] );
-	mine = null;
-	
-	game.removeEventListener( touch ? 'touchmove' : 'mousemove', doGameMove );
-	game.removeEventListener( touch ? 'touchend' : 'mouseup', doGameUp );
-}
-
 function doWindowLoad()
-{
+{	
 	touch = ( 'ontouchstart' in document.documentElement ) ? true : false;	
 	
 	assets = [
@@ -159,13 +204,12 @@ function doWindowLoad()
 		{source: 'purple.png', width: 161, height: 81, registrationX: 80, registrationY: 41, frames: 93}						
 	];
 	
-	germs = new Array();
-	
+	sheets = new Array();
+		
 	game = document.querySelector( '#game' );
-	game.addEventListener( touch ? 'touchstart' : 'mousedown', doGameDown );
-	doWindowResize();		
-	
-	stage = new Stage( game );
+	stage = new Stage( game );		
+		
+	doWindowResize();	
 	preload();
 }
 

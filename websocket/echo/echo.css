@@ -18,11 +18,13 @@ input[type="button"] {
 	font-size: 22px;
 	height: 64px;
 	outline: none;
-	
+
+	-moz-border-image: url( button.png ) 20 20 20 20 round round;	
 	-webkit-border-image: url( button.png ) 20 20 20 20 round round;	
 }
 
 input[type="button"]:active {
+	-moz-border-image: url( button.focus.png ) 20 20 20 20 round round;
 	-webkit-border-image: url( button.focus.png ) 20 20 20 20 round round;		
 }
 
@@ -33,11 +35,14 @@ input[type="text"] {
 	font-size: 28px;
 	height: 64px;
 	outline: none;
+	width: 100%;
 	
+	-moz-border-image: url( text.png ) 20 20 20 20 round round;	
 	-webkit-border-image: url( text.png ) 20 20 20 20 round round;	
 }
 
 input[type="text"]:focus {
+	-moz-border-image: url( text.focus.png ) 20 20 20 20 round round;
 	-webkit-border-image: url( text.focus.png ) 20 20 20 20 round round;		
 }
 
@@ -51,8 +56,11 @@ input[type="text"]:focus {
 	right: 0px;
 	top: 0px;	
 	
+	-moz-transition: bottom 0.8s;
+	-moz-transition-delay: 2s;
+	
 	-webkit-transition: bottom 0.8s;
-	-webkit-transition-delay: 2s;
+	-webkit-transition-delay: 2s;	
 }
 
 #measure {
@@ -84,6 +92,10 @@ input[type="text"]:focus {
 	position: absolute;	
 	text-shadow: rgba( 255, 255, 255, 0.80 ) 0px 1px 0px;	
 
+	-moz-transition-property: opacity;
+	-moz-transition-delay: 5s;
+	-moz-transition-duration: 1s;
+
 	-webkit-transition-property: opacity;
 	-webkit-transition-delay: 5s;
 	-webkit-transition-duration: 1s;
@@ -103,5 +115,6 @@ input[type="text"]:focus {
 	right: 0px;
 	top: 0px;
 	
+	-moz-border-image: url( balloon.png ) 15 24 15 24 round round;	
 	-webkit-border-image: url( balloon.png ) 15 24 15 24 round round;	
 }

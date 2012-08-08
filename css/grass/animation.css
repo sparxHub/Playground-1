@@ -1,0 +1,42 @@
+@-moz-keyframes across {
+	from {
+		left: 0px;
+		top: -50px;
+	}
+	
+	50% {
+		left: 500px;
+		top: -50px;		
+	}
+ 
+	to {
+		left: 0px;
+		top: -50px;
+	}
+}
+
+@-webkit-keyframes across {
+	from {
+		left: 0px;
+		top: -50px;		
+		-webkit-transform: rotate( 0deg );
+	}
+ 
+	50% {
+		left: 500px;
+		top: -50px;		
+		-webkit-transform: rotate( 360deg );		
+	} 
+ 
+	to {
+		left: 0px;
+		top: -50px;
+		-webkit-transform: rotate( 0deg );
+	}
+}
+
+#sun {
+	left: 0px;
+	position: absolute;
+	top: -50px;
+}

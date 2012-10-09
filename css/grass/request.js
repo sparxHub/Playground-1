@@ -5,6 +5,9 @@ var MOVE_RATE = 3;
 // When the animation started
 var start = null;
 
+// Work on touch and mouse driven interactions
+var touch = null;
+
 // Called when the browser is setting up to repaint
 // Moves the sun further across the sky if needed
 // Otherwise no longer requests a repaint notification
@@ -42,12 +45,15 @@ function doSunMove( timestamp )
 		// Do not request a repaint
 		// Clear timing variable
 		start = null;	
+		
+		// Put the sun back at the start
+		sun.style.left = '0px';
 	}
 }
 
-// Called when the mouse goes over the sun
+// Called when the user interacts with the sun
 // Starts the animation
-function doSunOver()
+function doSunStart()
 {
 	// Only animate if not currently animating
 	if( start == null )
@@ -71,9 +77,16 @@ function doWindowLoad()
 		window.mozRequestAnimationFrame ||
 		window.webkitRequestAnimationFrame;
 	
-	// Listen for mouse movement
+	// Figure out if this is a touch enabled screen
+	touch = ( 'ontouchstart' in document.documentElement ) ? true : false;	
+	
+	// Click on the sun to trigger animation
+	// Alternatively touch the sun to trigger animation
 	sun = document.querySelector( '#sun' );	
-	sun.addEventListener( 'mouseover', doSunOver );
+	sun.addEventListener( touch ? 'touchstart' : 'click', doSunStart );
+	
+	// Plant some grass for this sunny day
+	plant();
 }
 
 // Catch the page load event

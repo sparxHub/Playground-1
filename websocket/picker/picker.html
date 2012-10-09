@@ -114,7 +114,8 @@ function doCanvasUp( evt )
 		xhr.onload = doRequestLoad;
 	}
 	
-	xhr.open( 'POST', 'color.php', true );
+	// xhr.open( 'POST', 'color.php', true );
+	xhr.open( 'POST', 'http://paigehoyt.com/nightlight/color.php', true );
 	xhr.send( form );	
 	
 	socket.send( color );

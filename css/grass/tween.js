@@ -1,14 +1,25 @@
 // Track if the animation is playing or not
 var playing = false;
 
+// Work on touch and mouse driven interactions
+var touch = null;
+
 // Called when the animation is complete
 // Changes reference to denote animation is not playing
+// Resets animation for another run
 function doSunComplete()
 {
+	var sun = null;
+	
+	// Clear playing reference
 	playing = false;	
+	
+	// Reset the position of the sun
+	sun = document.querySelector( '#sun' );
+	sun.style.left = '0px';
 }
 
-// Called when the mouse moves over the sun
+// Called when the user interacts with the sun
 // Animates the sun across the screen
 // Uses the GreenSock tweening library
 function doSunMove()
@@ -48,9 +59,16 @@ function doWindowLoad()
 {
 	var sun = null;
 	
-	// Listen for the mouse to move over the sun
+	// Figure out if this is a touch enabled screen
+	touch = ( 'ontouchstart' in document.documentElement ) ? true : false;	
+	
+	// Click on the sun to trigger animation
+	// Alternatively touch the sun to trigger animation
 	sun = document.querySelector( '#sun' );
-	sun.addEventListener( 'mouseover', doSunMove );	
+	sun.addEventListener( touch ? 'touchstart' : 'click', doSunMove );	
+	
+	// Plant some grass for this sunny day
+	plant();
 }
 
 // Capture when the page has loaded

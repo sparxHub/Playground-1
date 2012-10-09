@@ -1,6 +1,9 @@
+// Work on touch and mouse driven interactions
+var touch = null;
+
 // Called when the animation ends
 // Displays an informational message
-function doSunEnd()
+function doSunEnding()
 {
 	var sun = null;
 	
@@ -9,17 +12,17 @@ function doSunEnd()
 	// Remove animation events
 	// Firefox
 	sun.style.MozAnimation = '';
-	sun.removeEventListener( 'animationstart', doSunStart );
+	sun.removeEventListener( 'animationstart', doSunStarting );
 	sun.addEventListener( 'animationiteration', doSunIteration );	
-	sun.addEventListener( 'animationend', doSunEnd );
-	
+	sun.addEventListener( 'animationend', doSunEnding );
+		
 	// WebKit
 	sun.style.webkitAnimation = '';	
-	sun.removeEventListener( 'webkitAnimationStart', doSunStart );
+	sun.removeEventListener( 'webkitAnimationStart', doSunStarting );
 	sun.removeEventListener( 'webkitAnimationIteration', doSunIteration );	
-	sun.removeEventListener( 'webkitAnimationEnd', doSunEnd );		
+	sun.removeEventListener( 'webkitAnimationEnd', doSunEnding );		
 	
-	console.log( 'End' );	
+	console.log( 'Ending' );	
 }
 
 // Called when the animation completes an iteration
@@ -30,12 +33,12 @@ function doSunIteration()
 	console.log( 'Iteration' );	
 }
 
-// Called when the mouse is over the sun
+// Called when the user interacts with the sun
 // Animates the sun across the screen
-function doSunOver()
+function doSunStart()
 {
 	var sun = null;
-	
+		
 	// Reference to the item to animate
 	sun = document.querySelector( '#sun' );	
 	
@@ -47,32 +50,31 @@ function doSunOver()
 		'left: ' +
 		( window.innerWidth - sun.clientWidth ) +
 		'px; ' +
-		'top: -50px; ' +
 		( sun.style.MozAnimation == null ? '-webkit-' : '-moz-' ) +
 		'transform: rotate( 360deg );' +
 		'}' );
-	
+		
 	// Set the animation in motion
 	sun.style.MozAnimation = 'across 4s ease-in-out 0s 5 alternate';
 	sun.style.webkitAnimation = 'across 4s ease-in-out 0s 5 alternate';	
 	
 	// Listen for events that happen during the animation
 	// Firefox
-	sun.addEventListener( 'animationstart', doSunStart );
+	sun.addEventListener( 'animationstart', doSunStarting );
 	sun.addEventListener( 'animationiteration', doSunIteration );	
-	sun.addEventListener( 'animationend', doSunEnd );
-	
+	sun.addEventListener( 'animationend', doSunEnding );
+		
 	// WebKit
-	sun.addEventListener( 'webkitAnimationStart', doSunStart );
+	sun.addEventListener( 'webkitAnimationStart', doSunStarting );
 	sun.addEventListener( 'webkitAnimationIteration', doSunIteration );	
-	sun.addEventListener( 'webkitAnimationEnd', doSunEnd );	
+	sun.addEventListener( 'webkitAnimationEnd', doSunEnding );	
 }
 
 // Called when the animation starts
 // Displays an informational message
-function doSunStart()
+function doSunStarting()
 {
-	console.log( 'Start' );	
+	console.log( 'Starting' );	
 }
 
 // Called when the page has loaded
@@ -81,9 +83,16 @@ function doWindowLoad()
 {
 	var sun = null;
 	
-	// Watch for the mouse to be over the sun	
+	// Figure out if this is a touch enabled screen
+	touch = ( 'ontouchstart' in document.documentElement ) ? true : false;			
+	
+	// Click on the sun to trigger animation
+	// Alternatively touch the sun to trigger animation
 	sun = document.querySelector( '#sun' );
-	sun.addEventListener( 'mouseover', doSunOver );
+	sun.addEventListener( touch ? 'touchstart' : 'click', doSunStart );
+	
+	// Plant some grass for this sunny day
+	plant();
 }
 
 // Catch when the page has loaded

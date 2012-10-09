@@ -181,7 +181,10 @@ function doSocketMessage( mess )
 	console.log( mess.data );	
 	
 	values = mess.data.split( ',' );	
-	update( Number( values[1] ) / 480, Number( values[0] ) / 480 );
+	update( 
+		Math.round( ( Number( values[1] ) / 480 ) * 3 ), 
+		Math.round( ( Number( values[0] ) / 480 ) * 3 )
+	);
 }
 
 function doSocketOpen()

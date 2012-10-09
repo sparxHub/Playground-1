@@ -40,7 +40,8 @@ function doWindowLoad()
 {
 	xhr = new XMLHttpRequest();
 	xhr.onload = doRequestLoad;
-	xhr.open( 'GET', 'color.php', true );
+	// xhr.open( 'GET', 'color.php', true );
+	xhr.open( 'GET', 'http://paigehoyt.com/nightlight/color.php', true );
 	xhr.send( null );	
 
 	window.WebSocket = window.WebSocket || window.MozWebSocket;
